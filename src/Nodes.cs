@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace CustomQueue
 {
-    public class Nodes
+    public class Nodes<T>
     {
-        private List<Node> nodeList;
+        private List<Node<T>> nodeList;
         private HashSet<Type> typeList;
         private readonly QueueType queueType;
         private int nodeCounter;
@@ -15,17 +15,17 @@ namespace CustomQueue
 
         public Nodes(QueueType queueType)
         {
-            this.nodeList = new List<Node>();
+            this.nodeList = new List<Node<T>>();
             this.typeList = new HashSet<Type>();
             this.queueType = queueType;
         }
 
-        public Node AddNode(object nodeData, bool replaceNode = false)
+        public Node<T> AddNode(T nodeData, bool replaceNode = false)
         {
             if(!replaceNode)
                 nodeCounter++;
 
-            var newNode = new Node(nodeData, nodeCounter);
+            var newNode = new Node<T>(nodeData, nodeCounter);
             
             nodeList.Add(newNode);
             typeList.Add(newNode.DataType);
@@ -40,9 +40,9 @@ namespace CustomQueue
             return newNode;
         }
 
-        public Node GetNode()
+        public Node<T> GetNode()
         {
-            Node node = nodeList.FirstOrDefault(n => n.NumberInQueue == currentNodeNumber);
+            Node<T> node = nodeList.FirstOrDefault(n => n.NumberInQueue == currentNodeNumber);
 
             while (node == null)
             {
@@ -103,7 +103,7 @@ namespace CustomQueue
             return node;
         }
 
-        public Node GetFirstNode()
+        public Node<T> GetFirstNode()
         {
             if (queueType == QueueType.LIFO || queueType == QueueType.CircleLIFO)
                 return nodeList.FirstOrDefault(n => n.NumberInQueue == nodeCounter);
@@ -113,7 +113,7 @@ namespace CustomQueue
             return null;
         }
 
-        public Node GetLastNode()
+        public Node<T> GetLastNode()
         {
             if (queueType == QueueType.LIFO || queueType == QueueType.CircleLIFO)
                 return nodeList.FirstOrDefault(n => n.NumberInQueue == 1);
@@ -133,12 +133,12 @@ namespace CustomQueue
             return HaveSameType() && typeList.Contains(type);
         }
 
-        public bool NodeTypeIs(Node node, Type type)
+        public bool NodeTypeIs(Node<T> node, Type type)
         {
             return nodeList.FirstOrDefault(n => n.Id == node.Id)?.DataType == type;
         }
 
-        public bool IsLastNode(Node node)
+        public bool IsLastNode(Node<T> node)
         {
             if (node == null)
                 return false;
@@ -151,10 +151,9 @@ namespace CustomQueue
             return false;
         }
 
-        public void RemoveNode(Node node)
+        public void RemoveNode(Node<T> node)
         {
             maxNodeNumber--;
-            //nodeCounter--;
 
             if (queueType == QueueType.FIFO || queueType == QueueType.CircleFIFO)
             {
@@ -174,12 +173,12 @@ namespace CustomQueue
             nodeList.Remove(node);
         }
 
-        public void RemoveDataFromNode(Node node)
+        public void RemoveDataFromNode(Node<T> node)
         {
             var nodeNumber = node.NumberInQueue;
             RemoveNode(node);
 
-            var newNode = new Node( null, nodeNumber);
+            var newNode = new Node<T>(null, nodeNumber);
 
             nodeList.Add(newNode);
         }

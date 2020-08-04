@@ -6,7 +6,7 @@ namespace CustomQueue
     {
         static void Main(string[] args)
         {
-           
+            
         }
     }
 }

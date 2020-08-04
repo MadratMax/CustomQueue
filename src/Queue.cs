@@ -2,22 +2,22 @@
 
 namespace CustomQueue
 {
-    public class Queue
+    public class Queue <T>
     {
         /// <summary>
         /// Represents a custom queue.
         /// </summary>
         private readonly QueueType queueType;
-        private readonly Nodes nodes;
+        private readonly Nodes<T> nodes;
         private bool isLimited;
-        private Node node;
+        private Node<T> node;
         private int limit;
         private int limitCounter;
 
         public Queue(QueueType queueType)
         {
             this.queueType = queueType;
-            this.nodes = new Nodes(queueType);
+            this.nodes = new Nodes<T>(queueType);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace CustomQueue
         /// <summary>
         /// Add new node to queue.
         /// </summary>
-        public Node Add(object data)
+        public Node<T> Add(T data)
         {
             if(data == null || (IsLimited && limitCounter == limit))
                 return null;
@@ -54,7 +54,7 @@ namespace CustomQueue
         /// <summary>
         /// Removes the entire node data. Actual node is replaced by null.
         /// </summary>
-        public void Remove(Node node)
+        public void Remove(Node<T> node)
         {
             this.nodes.RemoveNode(node);
             limitCounter--;
@@ -63,7 +63,7 @@ namespace CustomQueue
         /// <summary>
         /// Removes data from node. Actual node remains the same.
         /// </summary>
-        public void RemoveDataFromNode(Node node)
+        public void RemoveDataFromNode(Node<T> node)
         {
             this.nodes.RemoveDataFromNode(node);
         }
@@ -71,7 +71,7 @@ namespace CustomQueue
         /// <summary>
         /// Returns queue with set current node as the first node.
         /// </summary>
-        public Queue First()
+        public Queue<T> First()
         {
             this.node = nodes.GetFirstNode();
             return this;
@@ -80,7 +80,7 @@ namespace CustomQueue
         /// <summary>
         /// Returns queue with set current node as the last node.
         /// </summary>
-        public Queue Last()
+        public Queue<T> Last()
         {
             this.node = nodes.GetLastNode();
             return this;
@@ -89,7 +89,7 @@ namespace CustomQueue
         /// <summary>
         /// Set current node as the next node. Returns Queue instance.
         /// </summary>
-        public Queue Next()
+        public Queue<T> Next()
         {
             var currentNode = nodes.GetNode();
 
@@ -110,7 +110,7 @@ namespace CustomQueue
             this.nodes.RemoveNodes();
         }
 
-        public Node Node => node;
+        public Node<T> Node => node;
 
         private int Limit => limit;
 

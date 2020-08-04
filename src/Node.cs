@@ -2,15 +2,23 @@
 
 namespace CustomQueue
 {
-    public class Node
+    public class Node <T>
     {
-        private readonly object data;
+        private readonly T data;
         private int number;
+        private object p;
+        private int nodeNumber;
 
-        public Node(object data, int number)
+        public Node(T data, int number)
         {
             this.data = data;
             this.number = number;
+        }
+
+        public Node(object p, int nodeNumber)
+        {
+            this.p = p;
+            this.nodeNumber = nodeNumber;
         }
 
         public int NumberInQueue => number;
