@@ -1,8 +1,10 @@
 ﻿namespace CustomQueue
 {
-    enum QueueType
+    public enum QueueType
     {
         FIFO,
         LIFO,
+        CircleFIFO,
+        CircleLIFO,
     }
 }

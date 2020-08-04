@@ -1,50 +1,119 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CustomQueue
 {
-    class Queue
+    public class Queue
     {
-        private readonly bool isLimited;
-        private readonly Node node;
-        private int limit = 1;
+        /// <summary>
+        /// Represents a custom queue.
+        /// </summary>
+        private readonly QueueType queueType;
+        private readonly Nodes nodes;
+        private bool isLimited;
+        private Node node;
+        private int limit;
+        private int limitCounter;
 
-        public Queue(object firstNode = null, bool isLimited = false)
+        public Queue(QueueType queueType)
         {
-            if (firstNode != null)
-                this.node = new Node(firstNode);
-
-            this.isLimited = isLimited;
+            this.queueType = queueType;
+            this.nodes = new Nodes(queueType);
         }
 
+        /// <summary>
+        /// Sets max queue size. New nodes won't be added when the limit is exceeded.
+        /// </summary>
         public void SetQueueLimit(int maxNodeQuantity)
         {
-            if(!IsLimited)
-                throw new ArgumentException("This queue is created with no limit of the number of nodes");
-
             this.limit = maxNodeQuantity;
+            this.isLimited = true;
         }
 
-        public void Add(object data)
+        /// <summary>
+        /// Returns true if all node type in queue are equal to the specified type.
+        /// </summary>
+        public bool NodeTypesAre(Type type)
         {
-            throw new NotImplementedException();
+            return nodes.AllNodeTypesAre(type);
         }
 
-        public void Remove(object data)
+        /// <summary>
+        /// Add new node to queue.
+        /// </summary>
+        public Node Add(object data)
         {
-            throw new NotImplementedException();
+            if(data == null || (IsLimited && limitCounter == limit))
+                return null;
+            
+            var newNode = nodes.AddNode(data);
+            limitCounter++;
+
+            return newNode;
         }
 
-        public object GetNext()
+        /// <summary>
+        /// Removes the entire node data. Actual node is replaced by null.
+        /// </summary>
+        public void Remove(Node node)
         {
-            throw new NotImplementedException();
+            this.nodes.RemoveNode(node);
+            limitCounter--;
         }
+
+        /// <summary>
+        /// Removes data from node. Actual node remains the same.
+        /// </summary>
+        public void RemoveDataFromNode(Node node)
+        {
+            this.nodes.RemoveDataFromNode(node);
+        }
+
+        /// <summary>
+        /// Returns queue with set current node as the first node.
+        /// </summary>
+        public Queue First()
+        {
+            this.node = nodes.GetFirstNode();
+            return this;
+        }
+
+        /// <summary>
+        /// Returns queue with set current node as the last node.
+        /// </summary>
+        public Queue Last()
+        {
+            this.node = nodes.GetLastNode();
+            return this;
+        }
+
+        /// <summary>
+        /// Set current node as the next node. Returns Queue instance.
+        /// </summary>
+        public Queue Next()
+        {
+            var currentNode = nodes.GetNode();
+
+            if (queueType == QueueType.CircleFIFO || queueType == QueueType.CircleLIFO)
+            {
+                if (nodes.IsLastNode(currentNode))
+                {
+                    nodes.Reset();
+                } 
+            }
+
+            this.node = currentNode;
+            return this;
+        }
+
+        public void Clear()
+        {
+            this.nodes.RemoveNodes();
+        }
+
+        public Node Node => node;
 
         private int Limit => limit;
 
         private bool IsLimited => isLimited;
-
-        private Node Node => node;
     }
 }
