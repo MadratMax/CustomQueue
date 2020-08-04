@@ -8,7 +8,7 @@ Create custom queue using one of four modes:
 - CircleLIFO - like LIFO with loop.
 
 Queue features:
-- Node<T> Add(T data); - add new node type of T.
+- Node<T> Add(T data); - create new node with <T> object.
 - void SetQueueLimit(int maxNodeQuantity); - set max number of possible nodes within queue.
 - bool NodeTypesAre(Type type); - check that entire nodes belong to one type.
 - void Remove(Node<T> node); - removes specified node.
