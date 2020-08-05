@@ -42,7 +42,7 @@ namespace CustomQueue
         /// </summary>
         public Node<T> Add(T data)
         {
-            if(data == null || (IsLimited && limitCounter == limit))
+            if(data == null || (IsLimited && limitCounter >= limit))
                 return null;
             
             var newNode = nodes.AddNode(data);
@@ -111,6 +111,8 @@ namespace CustomQueue
         public void Clear()
         {
             this.nodes.RemoveNodes();
+
+            limitCounter = 0;
         }
 
         /// <summary>
