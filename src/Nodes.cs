@@ -42,6 +42,9 @@ namespace CustomQueue
 
         public Node<T> GetNode()
         {
+            if (nodeList.Count == 0)
+                return null;
+
             Node<T> node = nodeList.FirstOrDefault(n => n.NumberInQueue == currentNodeNumber);
 
             while (node == null)
@@ -153,7 +156,7 @@ namespace CustomQueue
 
         public void RemoveNode(Node<T> node)
         {
-            maxNodeNumber--;
+           // maxNodeNumber--;
 
             if (queueType == QueueType.FIFO || queueType == QueueType.CircleFIFO)
             {
@@ -194,9 +197,11 @@ namespace CustomQueue
 
         public void RemoveNodes()
         {
-            foreach (var node in nodeList)
+            var count = nodeList.Count;
+
+            for (var i = count-1; i >= 0; i--)
             {
-                RemoveNode(node);
+                RemoveNode(nodeList[i]);
             }
 
             Reset();
