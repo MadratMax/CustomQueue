@@ -105,13 +105,22 @@ namespace CustomQueue
             return this;
         }
 
+        /// <summary>
+        /// Clear queue
+        /// </summary>
         public void Clear()
         {
             this.nodes.RemoveNodes();
         }
 
+        /// <summary>
+        /// Get current node
+        /// </summary>
         public Node<T> Node => node;
 
+        /// <summary>
+        /// Get max nodes limit
+        /// </summary>
         private int Limit => limit;
 
         private bool IsLimited => isLimited;
